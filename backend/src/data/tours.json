@@ -9,8 +9,9 @@
     "description": "Visit the wonder of the world in a single day from Cusco. Early departure to Ollantaytambo to board the Vistadome train with panoramic views, arrival at Aguas Calientes and a bus up to the Inca citadel. 2-hour guided tour with a certified expert, free time for photos, and return to Cusco at the end of the day.",
     "priceUSD": 380,
     "currency": "USD",
-    "durationLabel": "Full day",
+    "durationLabel": "Full day (14 hours)",
     "durationDays": 1,
+    "departureLabel": "Morning · 04:30 am",
     "rating": 4.9,
     "reviews": 842,
     "categories": ["Machu Picchu", "Day trip"],
@@ -23,6 +24,40 @@
       "Professional bilingual guide",
       "Hotel pick-up and drop-off in Cusco",
       "Breakfast and lunch"
+    ],
+    "excludes": [
+      "Tips for guides and drivers",
+      "Alcoholic drinks",
+      "Optional Huayna Picchu climb",
+      "Personal travel insurance",
+      "Expenses not mentioned in the itinerary"
+    ],
+    "itinerary": [
+      {
+        "time": "04:30 am",
+        "title": "Hotel pick-up",
+        "description": "Private transport from your hotel to Ollantaytambo station. Breakfast en route."
+      },
+      {
+        "time": "07:00 am",
+        "title": "Vistadome train to Aguas Calientes",
+        "description": "Panoramic windows, snacks, and drinks during the 1h 45min ride."
+      },
+      {
+        "time": "09:30 am",
+        "title": "Bus up to the Machu Picchu citadel",
+        "description": "Bus up the Hiram Bingham road. 2-hour guided tour with a certified expert."
+      },
+      {
+        "time": "01:00 pm",
+        "title": "Lunch and free time",
+        "description": "Lunch in Aguas Calientes. Free time for photos or to explore the town."
+      },
+      {
+        "time": "06:30 pm",
+        "title": "Return to Cusco",
+        "description": "Return train and hotel drop-off. Estimated arrival at 21:30."
+      }
     ]
   },
   {
@@ -35,8 +70,9 @@
     "description": "About a two-hour hike from Soraypampa to the stunning turquoise waters of Humantay Lake, at the foot of the snow-capped peak of the same name. Includes Andean breakfast, buffet lunch on the way back, bilingual guide, and the option to ride up with a local muleteer.",
     "priceUSD": 50,
     "currency": "USD",
-    "durationLabel": "Full day",
+    "durationLabel": "Full day (13 hours)",
     "durationDays": 1,
+    "departureLabel": "Morning · 04:30 am",
     "rating": 4.7,
     "reviews": 318,
     "categories": ["Adventure", "Day trip"],
@@ -47,6 +83,44 @@
       "Andean breakfast and buffet lunch",
       "Optional horseback ride with a muleteer",
       "Hotel pick-up and drop-off in Cusco"
+    ],
+    "excludes": [
+      "Personal trekking gear",
+      "Tips for guides and muleteer",
+      "Travel insurance",
+      "Snacks and extra drinks"
+    ],
+    "itinerary": [
+      {
+        "time": "04:30 am",
+        "title": "Hotel pick-up",
+        "description": "Departure from Cusco towards Mollepata in a private van."
+      },
+      {
+        "time": "07:00 am",
+        "title": "Andean breakfast in Mollepata",
+        "description": "Hot drinks, breads, eggs, and local fruits before the hike."
+      },
+      {
+        "time": "08:30 am",
+        "title": "Hike from Soraypampa",
+        "description": "Two-hour guided ascent. Optional horseback ride with a local muleteer."
+      },
+      {
+        "time": "10:30 am",
+        "title": "Humantay Lake viewpoint",
+        "description": "Free time at the turquoise lake for photos and a short rest."
+      },
+      {
+        "time": "01:00 pm",
+        "title": "Buffet lunch",
+        "description": "Restorative lunch back at the base camp."
+      },
+      {
+        "time": "06:00 pm",
+        "title": "Return to Cusco",
+        "description": "Hotel drop-off. Estimated arrival at 18:30."
+      }
     ]
   },
   {
@@ -59,8 +133,9 @@
     "description": "Vinicunca, the Rainbow Mountain, is one of the most striking landscapes in the Peruvian Andes. Early morning departure to Cusipata, breakfast en route, and a 1.5-hour hike to the viewpoint at 5,036 m / 16,521 ft. Free time for photos and return with lunch included.",
     "priceUSD": 50,
     "currency": "USD",
-    "durationLabel": "Full day",
+    "durationLabel": "Full day (12 hours)",
     "durationDays": 1,
+    "departureLabel": "Early morning · 04:00 am",
     "rating": 4.8,
     "reviews": 412,
     "categories": ["Adventure", "Day trip"],
@@ -71,6 +146,44 @@
       "Andean breakfast en route",
       "Buffet lunch included",
       "Optional trekking poles"
+    ],
+    "excludes": [
+      "Site entrance fee (10 PEN)",
+      "Tips for guides",
+      "Travel insurance",
+      "Optional horseback ride"
+    ],
+    "itinerary": [
+      {
+        "time": "04:00 am",
+        "title": "Hotel pick-up",
+        "description": "Departure from Cusco toward Cusipata in a private van."
+      },
+      {
+        "time": "06:30 am",
+        "title": "Andean breakfast in Cusipata",
+        "description": "Coca tea, eggs, breads, and fruit before the hike."
+      },
+      {
+        "time": "08:30 am",
+        "title": "Hike to the Vinicunca viewpoint",
+        "description": "1.5-hour guided ascent up to 5,036 m / 16,521 ft."
+      },
+      {
+        "time": "11:00 am",
+        "title": "Photo time and descent",
+        "description": "Free time at the rainbow ridge before descending back."
+      },
+      {
+        "time": "01:30 pm",
+        "title": "Buffet lunch",
+        "description": "Hearty lunch back in Cusipata."
+      },
+      {
+        "time": "06:00 pm",
+        "title": "Return to Cusco",
+        "description": "Hotel drop-off at the end of the day."
+      }
     ]
   },
   {
@@ -83,8 +196,9 @@
     "description": "Full-day tour of the Sacred Valley of the Incas with small groups and a bilingual guide. Visit Pisac market and ruins, enjoy a buffet lunch in Urubamba, explore the Inca fortress of Ollantaytambo, the traditional weavers of Chinchero, and the pre-Hispanic salt mines of Maras.",
     "priceUSD": 50,
     "currency": "USD",
-    "durationLabel": "Full day",
+    "durationLabel": "Full day (12 hours)",
     "durationDays": 1,
+    "departureLabel": "Morning · 07:00 am",
     "rating": 4.7,
     "reviews": 256,
     "categories": ["Sacred Valley", "Day trip"],
@@ -96,6 +210,49 @@
       "Traditional Chinchero weavers",
       "Maras salt mines",
       "Buffet lunch in Urubamba"
+    ],
+    "excludes": [
+      "Boleto Turístico (tourist ticket)",
+      "Tips for guides and drivers",
+      "Travel insurance",
+      "Extra drinks at lunch"
+    ],
+    "itinerary": [
+      {
+        "time": "07:00 am",
+        "title": "Hotel pick-up",
+        "description": "Departure from Cusco in a private van toward Pisac."
+      },
+      {
+        "time": "08:30 am",
+        "title": "Pisac ruins and market",
+        "description": "Guided tour of the Inca terraces, then free time at the artisans' market."
+      },
+      {
+        "time": "12:00 pm",
+        "title": "Buffet lunch in Urubamba",
+        "description": "Local and international buffet at a riverside restaurant."
+      },
+      {
+        "time": "02:30 pm",
+        "title": "Ollantaytambo fortress",
+        "description": "Guided walk through the Inca fortress and old town."
+      },
+      {
+        "time": "04:30 pm",
+        "title": "Chinchero weavers",
+        "description": "Demonstration of traditional Andean weaving techniques."
+      },
+      {
+        "time": "05:30 pm",
+        "title": "Maras salt mines",
+        "description": "Visit the pre-Hispanic terraced salt evaporation ponds."
+      },
+      {
+        "time": "07:30 pm",
+        "title": "Return to Cusco",
+        "description": "Hotel drop-off at the end of the day."
+      }
     ]
   },
   {
@@ -108,8 +265,9 @@
     "description": "ATV adventure across the Chinchero plains, the concentric terraces of Moray, and the salt mines of Maras. Safety briefing, full gear, and an experienced guide-instructor. Suitable for riders with basic or advanced experience.",
     "priceUSD": 45,
     "currency": "USD",
-    "durationLabel": "Half day",
+    "durationLabel": "Half day (6 hours)",
     "durationDays": 1,
+    "departureLabel": "Morning · 07:30 am",
     "rating": 4.8,
     "reviews": 187,
     "categories": ["Adventure", "Sacred Valley"],
@@ -120,6 +278,44 @@
       "Moray circular terraces",
       "Maras salt mines",
       "Safety gear included"
+    ],
+    "excludes": [
+      "Personal protective gear",
+      "Site entrance fees",
+      "Tips for instructor",
+      "Travel insurance"
+    ],
+    "itinerary": [
+      {
+        "time": "07:30 am",
+        "title": "Hotel pick-up",
+        "description": "Transfer from your hotel in Cusco to the ATV base near Chinchero."
+      },
+      {
+        "time": "08:30 am",
+        "title": "Safety briefing and gear-up",
+        "description": "Helmet, gloves, and riding lesson before heading out."
+      },
+      {
+        "time": "09:00 am",
+        "title": "ATV ride to Moray",
+        "description": "Cross the Chinchero plains down to the circular Moray terraces."
+      },
+      {
+        "time": "10:30 am",
+        "title": "Maras salt mines",
+        "description": "Photo stop at the iconic pre-Hispanic terraced salt ponds."
+      },
+      {
+        "time": "12:00 pm",
+        "title": "Return to base",
+        "description": "Ride back to the ATV base and gear hand-off."
+      },
+      {
+        "time": "01:30 pm",
+        "title": "Drop-off in Cusco",
+        "description": "Hotel drop-off in central Cusco."
+      }
     ]
   },
   {
@@ -134,6 +330,7 @@
     "currency": "USD",
     "durationLabel": "10 days / 9 nights",
     "durationDays": 10,
+    "departureLabel": "Day 1 · Lima arrival",
     "rating": 4.9,
     "reviews": 96,
     "categories": ["Multi-day", "Machu Picchu", "Sacred Valley"],
@@ -146,6 +343,65 @@
       "Vistadome train to Machu Picchu",
       "Rainbow Mountain and Humantay",
       "Hand-picked boutique hotels"
+    ],
+    "excludes": [
+      "International flights",
+      "Tips for guides and drivers",
+      "Travel and health insurance",
+      "Visa fees",
+      "Some meals (see itinerary)"
+    ],
+    "itinerary": [
+      {
+        "time": "Day 1",
+        "title": "Arrival in Lima",
+        "description": "Airport pick-up and transfer to your boutique hotel in Miraflores."
+      },
+      {
+        "time": "Day 2",
+        "title": "Lima city and food tour",
+        "description": "Historic centre, Larco Museum, and a guided culinary walk in Barranco."
+      },
+      {
+        "time": "Day 3",
+        "title": "Paracas and Ballestas Islands",
+        "description": "Drive south, boat ride around the Ballestas, and overnight in Paracas."
+      },
+      {
+        "time": "Day 4",
+        "title": "Nazca Lines flight",
+        "description": "Small-plane flight over the Nazca Lines, then back to Lima."
+      },
+      {
+        "time": "Day 5",
+        "title": "Fly to Cusco",
+        "description": "Morning flight, easy day to acclimatise. Coca tea welcome."
+      },
+      {
+        "time": "Day 6",
+        "title": "Sacred Valley",
+        "description": "Pisac, Ollantaytambo, Chinchero, and Maras. Overnight in the valley."
+      },
+      {
+        "time": "Day 7",
+        "title": "Machu Picchu",
+        "description": "Vistadome train, guided citadel tour, return to Cusco."
+      },
+      {
+        "time": "Day 8",
+        "title": "Rainbow Mountain",
+        "description": "Full day to Vinicunca with breakfast and lunch included."
+      },
+      {
+        "time": "Day 9",
+        "title": "Humantay Lake",
+        "description": "Day hike to the turquoise lake. Free evening in Cusco."
+      },
+      {
+        "time": "Day 10",
+        "title": "Departure",
+        "description": "Transfer to the airport for your onward flight."
+      }
     ]
   }
 ]

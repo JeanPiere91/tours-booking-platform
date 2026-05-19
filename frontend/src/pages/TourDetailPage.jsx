@@ -2,8 +2,13 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { fetchTourBySlug } from '../api/toursApi.js';
+import BookingSidebar from '../components/BookingSidebar.jsx';
+import Breadcrumb from '../components/Breadcrumb.jsx';
+import ContentBlock from '../components/ContentBlock.jsx';
+import Gallery from '../components/Gallery.jsx';
+import IncludesList from '../components/IncludesList.jsx';
+import Itinerary from '../components/Itinerary.jsx';
 import StateMessage from '../components/StateMessage.jsx';
-import { formatPriceUSD } from '../utils/format.js';
 
 export default function TourDetailPage() {
   const { slug } = useParams();
@@ -46,7 +51,7 @@ export default function TourDetailPage() {
 
   if (status === 'not-found') {
     return (
-      <div className="tour-detail__layout">
+      <div className="page-section">
         <StateMessage
           title="Tour not found"
           description="The tour you're looking for doesn't exist or is no longer available."
@@ -62,7 +67,7 @@ export default function TourDetailPage() {
 
   if (status === 'error') {
     return (
-      <div className="tour-detail__layout">
+      <div className="page-section">
         <StateMessage
           title="Something went wrong"
           description={error?.message || 'Please try again in a moment.'}
@@ -77,62 +82,64 @@ export default function TourDetailPage() {
   }
 
   const primaryCategory = tour.categories?.[0] || '';
+  const breadcrumbs = [
+    { label: 'Home', to: '/' },
+    { label: 'Tours', to: '/tours' },
+    primaryCategory ? { label: primaryCategory, to: `/tours?category=${encodeURIComponent(primaryCategory)}` } : null,
+    { label: tour.title },
+  ].filter(Boolean);
 
   return (
     <article className="tour-detail">
-      <div className={`tour-detail__media tour-img--${tour.gradient || 'andes'}`} aria-hidden="true" />
+      <Breadcrumb items={breadcrumbs} />
 
-      <div className="tour-detail__layout">
-        <div className="tour-detail__main">
-          <Link to="/tours" className="back-link">
-            ← Back to catalogue
-          </Link>
-          {primaryCategory && <span className="tour-detail__badge">{primaryCategory}</span>}
-          <h1 className="tour-detail__title">{tour.title}</h1>
-          <p className="tour-detail__meta">
-            <span>📍 {tour.location}</span>
-            <span aria-hidden="true">·</span>
-            <span>⏱ {tour.durationLabel}</span>
-            {typeof tour.rating === 'number' && (
-              <>
-                <span aria-hidden="true">·</span>
-                <span aria-label={`Rated ${tour.rating} out of 5`}>
-                  ⭐ {tour.rating.toFixed(1)}
+      <section className="detail-hero">
+        <div className="detail-hero__inner">
+          <div className="detail-hero__head">
+            <p className="detail-hero__route">{tour.route}</p>
+            <h1 className="detail-hero__title">{tour.title}</h1>
+            <ul className="detail-hero__meta">
+              <li>
+                <span aria-hidden="true">📍</span> {tour.location}
+              </li>
+              <li>
+                <span aria-hidden="true">⏱</span> {tour.durationLabel}
+              </li>
+              {typeof tour.rating === 'number' && (
+                <li aria-label={`Rated ${tour.rating} out of 5`}>
+                  <span aria-hidden="true">⭐</span> {tour.rating.toFixed(1)} / 5
                   {tour.reviews ? ` (${tour.reviews} reviews)` : ''}
-                </span>
-              </>
-            )}
-          </p>
-
-          <p className="tour-detail__lede">{tour.summary}</p>
-          <p className="tour-detail__description">{tour.description}</p>
-
-          {tour.highlights?.length > 0 && (
-            <section className="tour-detail__section">
-              <h2>What's included</h2>
-              <ul className="highlights-list">
-                {tour.highlights.map((highlight) => (
-                  <li key={highlight}>{highlight}</li>
-                ))}
-              </ul>
-            </section>
-          )}
-        </div>
-
-        <aside className="tour-detail__sidebar" aria-label="Price">
-          <div className="price-card">
-            <p className="price-card__label">From</p>
-            <p className="price-card__amount">{formatPriceUSD(tour.priceUSD)}</p>
-            <p className="price-card__suffix">per person</p>
-            <button type="button" className="button button--primary" disabled>
-              Bookings open next sprint
-            </button>
-            <p className="price-card__note">
-              The booking flow ships in the next sprint. For now you can review all the details of
-              this tour.
-            </p>
+                </li>
+              )}
+            </ul>
           </div>
-        </aside>
+
+          <Gallery mainGradient={tour.gradient} />
+        </div>
+      </section>
+
+      <div className="detail-body">
+        <div className="detail-body__inner">
+          <div className="detail-body__main">
+            <ContentBlock title="About this tour">
+              <p className="content-block__body">{tour.description}</p>
+            </ContentBlock>
+
+            {tour.itinerary?.length > 0 && (
+              <ContentBlock title="Itinerary">
+                <Itinerary items={tour.itinerary} />
+              </ContentBlock>
+            )}
+
+            <ContentBlock title="What's included">
+              <IncludesList includes={tour.highlights} excludes={tour.excludes} />
+            </ContentBlock>
+          </div>
+
+          <div className="detail-body__sidebar">
+            <BookingSidebar tour={tour} />
+          </div>
+        </div>
       </div>
     </article>
   );

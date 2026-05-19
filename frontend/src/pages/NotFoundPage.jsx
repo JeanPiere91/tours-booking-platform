@@ -4,7 +4,7 @@ import StateMessage from '../components/StateMessage.jsx';
 
 export default function NotFoundPage() {
   return (
-    <div className="tour-detail__layout">
+    <div className="page-section">
       <StateMessage
         title="Page not found"
         description="The page you're looking for doesn't exist."
