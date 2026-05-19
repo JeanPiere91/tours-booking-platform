@@ -1,15 +1,9 @@
-const currencyFormatter = new Intl.NumberFormat('en-AU', {
-  style: 'currency',
-  currency: 'AUD',
-  maximumFractionDigits: 0,
-});
-
-export function formatCurrency(value) {
-  return currencyFormatter.format(value);
+export function formatPriceUSD(value) {
+  if (typeof value !== 'number') return '';
+  return `USD ${value.toLocaleString('en-US')}`;
 }
 
-export function formatDuration(days) {
-  if (!days || days < 1) return 'Half day';
-  if (days === 1) return '1 day';
-  return `${days} days`;
+export function formatRating(rating) {
+  if (typeof rating !== 'number') return '';
+  return rating.toFixed(1);
 }

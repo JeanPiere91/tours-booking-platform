@@ -1,11 +1,16 @@
 const tours = require('./tours.json');
 
+function matchesCategory(tour, category) {
+  const list = Array.isArray(tour.categories) ? tour.categories : [];
+  const normalized = category.toLowerCase();
+  return list.some((cat) => cat.toLowerCase() === normalized);
+}
+
 function list({ category } = {}) {
   if (!category || category.toLowerCase() === 'all') {
     return tours;
   }
-  const normalized = category.toLowerCase();
-  return tours.filter((tour) => tour.category.toLowerCase() === normalized);
+  return tours.filter((tour) => matchesCategory(tour, category));
 }
 
 function findBySlug(slug) {
@@ -13,7 +18,9 @@ function findBySlug(slug) {
 }
 
 function categories() {
-  return [...new Set(tours.map((tour) => tour.category))].sort();
+  const set = new Set();
+  tours.forEach((tour) => (tour.categories || []).forEach((cat) => set.add(cat)));
+  return [...set].sort();
 }
 
 module.exports = { list, findBySlug, categories };

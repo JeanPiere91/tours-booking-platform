@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="8" fill="#0f766e"/>
-  <path d="M8 22 L16 8 L24 22 Z" fill="#fefce8"/>
-  <circle cx="16" cy="20" r="2" fill="#0f766e"/>
+  <rect width="32" height="32" rx="7" fill="#E97817"/>
+  <text x="16" y="21" text-anchor="middle" font-family="Georgia, serif"
+        font-weight="600" font-size="13" fill="#FDF8F1" letter-spacing="-0.5">IPA</text>
 </svg>

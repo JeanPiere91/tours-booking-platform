@@ -1,6 +1,6 @@
 export default function FilterChips({ categories, value, onChange }) {
   return (
-    <div className="filter-chips" role="tablist" aria-label="Filter tours by category">
+    <div className="filters" role="tablist" aria-label="Filter tours by category">
       {categories.map((category) => {
         const isActive = category === value;
         return (
