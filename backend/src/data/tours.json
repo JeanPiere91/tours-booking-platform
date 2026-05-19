@@ -1,0 +1,173 @@
+[
+  {
+    "id": "1",
+    "slug": "great-ocean-road-day-trip",
+    "title": "Great Ocean Road Day Trip",
+    "category": "Nature",
+    "location": "Victoria, Australia",
+    "durationDays": 1,
+    "priceAUD": 189,
+    "rating": 4.8,
+    "summary": "Spectacular cliffs, the Twelve Apostles and rainforest walks along Australia's most iconic coastal drive.",
+    "description": "Depart Melbourne early and follow the winding Great Ocean Road past surf beaches, koala habitats and the Otway rainforest. Pause at Memorial Arch, walk among ancient ferns at Maits Rest and finish the day at the breathtaking Twelve Apostles for golden-hour photos before returning to the city.",
+    "highlights": [
+      "Twelve Apostles viewpoint",
+      "Loch Ard Gorge boardwalk",
+      "Otway rainforest short walk",
+      "Wild koala spotting at Kennett River"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "id": "2",
+    "slug": "kyoto-cultural-walking-tour",
+    "title": "Kyoto Cultural Walking Tour",
+    "category": "Culture",
+    "location": "Kyoto, Japan",
+    "durationDays": 1,
+    "priceAUD": 145,
+    "rating": 4.9,
+    "summary": "Wander between temples, tea houses and the bamboo grove with a local guide who knows the quiet streets.",
+    "description": "Start at Fushimi Inari's vermilion gates before sunrise crowds, then weave through Gion's lantern-lit lanes. Share matcha in a traditional tea house, visit Kiyomizu-dera, and end the walk in the surreal Arashiyama bamboo grove. Includes tea ceremony and small-group guide.",
+    "highlights": [
+      "Fushimi Inari early access",
+      "Gion district guided walk",
+      "Traditional tea ceremony",
+      "Arashiyama bamboo grove"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "id": "3",
+    "slug": "patagonia-trekking-expedition",
+    "title": "Patagonia Trekking Expedition",
+    "category": "Adventure",
+    "location": "Torres del Paine, Chile",
+    "durationDays": 7,
+    "priceAUD": 2390,
+    "rating": 4.7,
+    "summary": "A seven-day trek through Torres del Paine: granite towers, glacier lakes and refugio nights under the southern sky.",
+    "description": "Hike the legendary 'W' circuit with an expert mountain guide. Sleep in cosy refugios, paddle past floating ice at Grey Glacier, and stand beneath the three iconic granite towers at sunrise. All park fees, transfers from Puerto Natales, meals and group gear included.",
+    "highlights": [
+      "Sunrise at the Torres del Paine viewpoint",
+      "Grey Glacier kayak add-on",
+      "French Valley lookout hike",
+      "Refugio accommodation included"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "id": "4",
+    "slug": "santorini-sunset-sail",
+    "title": "Santorini Sunset Sail",
+    "category": "Beach",
+    "location": "Santorini, Greece",
+    "durationDays": 1,
+    "priceAUD": 220,
+    "rating": 4.9,
+    "summary": "Catamaran cruise around the caldera with swim stops at the hot springs, dinner on board and the famous Oia sunset.",
+    "description": "Board a luxury catamaran from Vlychada and glide along Santorini's volcanic coastline. Swim at the Red Beach, snorkel above an underwater caldera and warm up in natural hot springs. As the sun sets behind Oia, your captain serves a Greek BBQ on deck with local wines.",
+    "highlights": [
+      "Caldera catamaran cruise",
+      "Swim at Red and White Beaches",
+      "Hot springs snorkel stop",
+      "Onboard Greek BBQ dinner"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "id": "5",
+    "slug": "machu-picchu-classic-trek",
+    "title": "Machu Picchu Classic Trek",
+    "category": "Adventure",
+    "location": "Cusco, Peru",
+    "durationDays": 4,
+    "priceAUD": 1180,
+    "rating": 4.8,
+    "summary": "The classic four-day Inca Trail trek ending with sunrise at the Sun Gate above Machu Picchu.",
+    "description": "Follow the original Inca paving stones over Dead Woman's Pass, through cloud forest and past lost citadels. Sleep in supported camps and arrive at Inti Punku at dawn on day four for your first view of Machu Picchu. Includes porters, chef-cooked meals and entry permits.",
+    "highlights": [
+      "Dead Woman's Pass crossing",
+      "Wiñay Wayna ruins visit",
+      "Sun Gate sunrise arrival",
+      "Guided Machu Picchu citadel tour"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "id": "6",
+    "slug": "tuscany-food-and-wine-weekend",
+    "title": "Tuscany Food and Wine Weekend",
+    "category": "Food",
+    "location": "Chianti, Italy",
+    "durationDays": 3,
+    "priceAUD": 690,
+    "rating": 4.7,
+    "summary": "Three days of vineyards, hand-rolled pasta classes and slow Tuscan lunches in the hills between Florence and Siena.",
+    "description": "Stay at a family-run agriturismo in the heart of Chianti. Tour two boutique wineries, learn to make pici and ragù from a nonna, and spend an afternoon hunting truffles with a local forager and his dogs. All tastings, three dinners and transfers from Florence included.",
+    "highlights": [
+      "Chianti Classico winery tastings",
+      "Hands-on pasta masterclass",
+      "Truffle hunt with a local forager",
+      "Stay at a working agriturismo"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1505765050516-f72dcac9c60e?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "id": "7",
+    "slug": "iceland-northern-lights-escape",
+    "title": "Iceland Northern Lights Escape",
+    "category": "Nature",
+    "location": "Reykjavik, Iceland",
+    "durationDays": 4,
+    "priceAUD": 1450,
+    "rating": 4.6,
+    "summary": "Chase the aurora across the Golden Circle, soak in geothermal lagoons and ride snowmobiles on Langjökull glacier.",
+    "description": "Four winter days exploring south Iceland: Þingvellir, Geysir and Gullfoss by day, and aurora hunts by night with a meteorologist guide. Includes a snowmobile tour on Langjökull glacier, a relaxing visit to the Sky Lagoon and cosy boutique-hotel stays in Reykjavik.",
+    "highlights": [
+      "Guided aurora hunt nights",
+      "Golden Circle full-day tour",
+      "Snowmobile on Langjökull glacier",
+      "Sky Lagoon geothermal soak"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "id": "8",
+    "slug": "moroccan-desert-and-medinas",
+    "title": "Moroccan Desert and Medinas",
+    "category": "Culture",
+    "location": "Marrakech, Morocco",
+    "durationDays": 6,
+    "priceAUD": 1290,
+    "rating": 4.7,
+    "summary": "From the souks of Marrakech to a starlit camp in the Sahara, with camels, kasbahs and mint tea along the way.",
+    "description": "Begin in Marrakech with a guided medina walk, then cross the Atlas Mountains via the Aït Benhaddou kasbah. Ride camels into the Erg Chebbi dunes for a night under canvas with Berber musicians, before returning via Ouarzazate's film studios and Todra Gorge.",
+    "highlights": [
+      "Marrakech medina and souks tour",
+      "Atlas Mountains scenic drive",
+      "Camel trek into Erg Chebbi",
+      "Overnight Berber desert camp"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&w=1200&q=80"
+  },
+  {
+    "id": "9",
+    "slug": "bali-surf-and-yoga-retreat",
+    "title": "Bali Surf and Yoga Retreat",
+    "category": "Beach",
+    "location": "Canggu, Bali",
+    "durationDays": 5,
+    "priceAUD": 880,
+    "rating": 4.8,
+    "summary": "Daily surf lessons at Batu Bolong, sunrise yoga and a rice-paddy villa stay in the heart of Canggu.",
+    "description": "A five-day reset on Bali's south coast. Wake up to a yoga flow on the deck, surf with a qualified ISA coach at Batu Bolong, and enjoy plant-forward meals at the on-site kitchen. Includes a half-day Ubud temples and waterfalls excursion.",
+    "highlights": [
+      "Daily group surf lessons",
+      "Sunrise rooftop yoga sessions",
+      "Plant-forward breakfasts and dinners",
+      "Ubud temples day trip"
+    ],
+    "imageUrl": "https://images.unsplash.com/photo-1518544801976-3e159e50e5bb?auto=format&fit=crop&w=1200&q=80"
+  }
+]
