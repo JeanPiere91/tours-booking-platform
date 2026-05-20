@@ -47,13 +47,15 @@ pipeline {
         stage('4 · Security') {
             steps {
                 sh '''
-                    echo "Running basic security scan..."
-                    if command -v trivy >/dev/null 2>&1; then
-                        trivy image --severity HIGH,CRITICAL --no-progress $BACKEND_IMAGE:latest || true
-                        trivy image --severity HIGH,CRITICAL --no-progress $FRONTEND_IMAGE:latest || true
-                    else
-                        echo "Trivy is not installed yet. Security stage placeholder passed."
-                    fi
+                    echo "Running Trivy security scan..."
+
+                    docker run --rm \
+                    -v /var/run/docker.sock:/var/run/docker.sock \
+                    aquasec/trivy image --severity HIGH,CRITICAL --no-progress tours-booking-backend:latest || true
+
+                    docker run --rm \
+                    -v /var/run/docker.sock:/var/run/docker.sock \
+                    aquasec/trivy image --severity HIGH,CRITICAL --no-progress tours-booking-frontend:latest || true
                 '''
             }
         }
