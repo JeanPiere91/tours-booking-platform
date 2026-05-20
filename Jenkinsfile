@@ -84,9 +84,11 @@ pipeline {
             steps {
                 script { echo '─── Running backend Jest suite ──────────────────────────' }
                 sh '''
-                    cd backend
-                    npm install
-                    npm test
+                    docker run --rm \\
+                        -v "$PWD/backend:/app" \\
+                        -w /app \\
+                        node:20-alpine \\
+                        sh -c "npm install && npm test"
                 '''
             }
             post {
