@@ -84,21 +84,14 @@ pipeline {
             steps {
                 script { echo '─── Running backend Jest suite ──────────────────────────' }
                 sh '''
-                    docker run --rm \\
-                        --user "$(id -u):$(id -g)" \\
-                        -e HOME=/tmp \\
-                        -e NODE_ENV=test \\
-                        -v "$(pwd)/backend:/app" \\
-                        -w /app \\
-                        node:20-alpine \\
-                        sh -c "npm ci --no-audit --no-fund && npm run test:ci"
+                    cd backend
+                    npm install
+                    npm test
                 '''
             }
             post {
                 always {
                     junit allowEmptyResults: true, testResults: 'backend/reports/junit.xml'
-                    archiveArtifacts artifacts: 'backend/coverage/lcov-report/**', allowEmptyArchive: true
-                    archiveArtifacts artifacts: 'backend/coverage/cobertura-coverage.xml', allowEmptyArchive: true
                 }
             }
         }
