@@ -1,0 +1,34 @@
+[
+  {
+    "id": "window-seat",
+    "icon": "🪟",
+    "name": "Guaranteed window seat",
+    "description": "Per passenger, on the Vistadome train",
+    "priceUSD": 15,
+    "per": "passenger"
+  },
+  {
+    "id": "vegetarian-lunch",
+    "icon": "🥗",
+    "name": "Vegetarian lunch",
+    "description": "Buffet at a restaurant in Aguas Calientes",
+    "priceUSD": 35,
+    "per": "passenger"
+  },
+  {
+    "id": "private-guide",
+    "icon": "🎓",
+    "name": "Private bilingual guide",
+    "description": "Just for your group, for 3 hours",
+    "priceUSD": 80,
+    "per": "booking"
+  },
+  {
+    "id": "hotel-transfer",
+    "icon": "🚐",
+    "name": "Hotel → station transfer",
+    "description": "Round trip in private transport",
+    "priceUSD": 25,
+    "per": "booking"
+  }
+]

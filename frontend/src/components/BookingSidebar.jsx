@@ -1,9 +1,8 @@
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import PassengerCounter from './PassengerCounter.jsx';
 import { formatPriceUSD } from '../utils/format.js';
-
-const DEFAULT_DATE_LABEL = 'Jun 15, 2026';
 
 const PAX_TYPES = [
   { key: 'adults', category: 'Adult', subtitle: '12 years and over', factor: 1, min: 1 },
@@ -11,8 +10,24 @@ const PAX_TYPES = [
   { key: 'infants', category: 'Infant', subtitle: 'Ages 0 to 2', factor: 0, min: 0 },
 ];
 
+function defaultDate() {
+  const d = new Date();
+  d.setDate(d.getDate() + 30);
+  return d.toISOString().slice(0, 10);
+}
+
+function formatDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
 export default function BookingSidebar({ tour }) {
+  const navigate = useNavigate();
   const [counts, setCounts] = useState({ adults: 2, children: 1, infants: 0 });
+  const [date, setDate] = useState(defaultDate());
+  const [departure, setDeparture] = useState(tour.departureLabel || 'Morning');
 
   const setCount = (key) => (value) => setCounts((prev) => ({ ...prev, [key]: value }));
 
@@ -31,9 +46,22 @@ export default function BookingSidebar({ tour }) {
   }, [counts, tour.priceUSD]);
 
   const total = lines.reduce((sum, line) => sum + line.amount, 0);
+  const canBook = counts.adults >= 1 && Boolean(date) && Boolean(departure);
+
+  const onBook = () => {
+    if (!canBook) return;
+    navigate(`/booking/${tour.slug}`, {
+      state: {
+        date,
+        departure,
+        counts,
+        prettyDate: formatDate(date),
+      },
+    });
+  };
 
   return (
-    <aside className="booking-card" aria-label="Booking summary">
+    <aside className="booking-card" aria-label="Booking">
       <div className="booking-card__price">
         <p className="booking-card__price-label">From</p>
         <p className="booking-card__price-amount">
@@ -45,18 +73,28 @@ export default function BookingSidebar({ tour }) {
         <label className="field__label" htmlFor="tour-date">
           <span aria-hidden="true">📅</span> Tour date
         </label>
-        <button id="tour-date" type="button" className="field__input field__input--button">
-          {DEFAULT_DATE_LABEL}
-        </button>
+        <input
+          id="tour-date"
+          type="date"
+          className="field__input"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          min={new Date().toISOString().slice(0, 10)}
+        />
       </div>
 
       <div className="field">
         <label className="field__label" htmlFor="tour-departure">
           <span aria-hidden="true">🕐</span> Departure
         </label>
-        <button id="tour-departure" type="button" className="field__input field__input--button">
-          {tour.departureLabel || 'Morning'}
-        </button>
+        <select
+          id="tour-departure"
+          className="field__input"
+          value={departure}
+          onChange={(e) => setDeparture(e.target.value)}
+        >
+          <option value={tour.departureLabel || 'Morning'}>{tour.departureLabel || 'Morning'}</option>
+        </select>
       </div>
 
       <div className="field">
@@ -92,12 +130,14 @@ export default function BookingSidebar({ tour }) {
         <button
           type="button"
           className="btn-reserve"
-          aria-disabled="true"
-          onClick={(e) => e.preventDefault()}
+          onClick={onBook}
+          disabled={!canBook}
         >
           Book this tour <span aria-hidden="true">→</span>
         </button>
-        <p className="booking-card__note">Bookings open next sprint.</p>
+        {!canBook && (
+          <p className="booking-card__note">At least one adult is required to book.</p>
+        )}
       </div>
     </aside>
   );

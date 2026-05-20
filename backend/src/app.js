@@ -5,15 +5,19 @@ const morgan = require('morgan');
 const config = require('./config');
 const healthRouter = require('./routes/health');
 const toursRouter = require('./routes/tours');
+const addonsRouter = require('./routes/addons');
+const bookingsRouter = require('./routes/bookings');
 
 const app = express();
 
 app.use(cors({ origin: config.corsOrigin }));
-app.use(express.json());
+app.use(express.json({ limit: '256kb' }));
 app.use(morgan('dev'));
 
 app.use('/health', healthRouter);
 app.use('/api/tours', toursRouter);
+app.use('/api/addons', addonsRouter);
+app.use('/api/bookings', bookingsRouter);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found', path: req.originalUrl });
