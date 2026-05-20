@@ -37,10 +37,9 @@ pipeline {
 
         stage('3 · Code Quality') {
             steps {
-                sh '''
-                    echo "Code Quality stage placeholder"
-                    echo "SonarCloud/SonarQube analysis will be configured here."
-                '''
+                withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
+                    sh 'sonar-scanner'
+                }
             }
         }
 
