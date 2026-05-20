@@ -84,8 +84,7 @@ pipeline {
                 sh '''
                     echo "Checking backend health endpoint..."
                     sleep 10
-                    curl -f http://localhost:5000/health
-                    echo "Application health check passed."
+                    docker exec tours-backend wget -qO
                 '''
             }
         }
