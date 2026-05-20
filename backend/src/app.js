@@ -12,7 +12,9 @@ const app = express();
 
 app.use(cors({ origin: config.corsOrigin }));
 app.use(express.json({ limit: '256kb' }));
-app.use(morgan('dev'));
+if (process.env.NODE_ENV !== 'test') {
+  app.use(morgan('dev'));
+}
 
 app.use('/health', healthRouter);
 app.use('/api/tours', toursRouter);
