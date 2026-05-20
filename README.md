@@ -107,7 +107,7 @@ The system is a classic two-tier web application packaged into two Docker images
 | Containerisation     | Docker, Docker Compose v2           | Reproducible builds and orchestrated deploys                     |
 | CI/CD                | Jenkins (declarative pipeline)      | Build, test, scan, deploy, release, monitor                      |
 | Security scanning    | Trivy                               | Image-level CVE detection (HIGH/CRITICAL gating)                 |
-| Code quality         | SonarCloud (placeholder)            | Maintainability and duplication analysis                         |
+| Code quality         | SonarCloud + SonarScanner           | Maintainability, duplication, complexity, security hotspots      |
 | Source control       | Git + GitHub                        | Versioning and webhook trigger for Jenkins                       |
 | Hosting              | Google Cloud Compute VM             | Single-host Linux deployment target                              |
 
@@ -159,6 +159,7 @@ tours-booking-platform/
 │   │   ├── config.js                 Env-var loader
 │   │   └── server.js                 HTTP server bootstrap (dotenv)
 │   ├── Dockerfile                    Production image (Node 20 Alpine, non-root)
+│   ├── Dockerfile.test               Throw-away image used by the Jenkins Test stage
 │   ├── jest.config.js                JUnit + Cobertura reporters
 │   ├── package.json                  npm scripts: dev / start / test / test:ci
 │   └── .env.example                  Resend + server placeholders
@@ -182,6 +183,7 @@ tours-booking-platform/
 │   ├── mockups/                      HTML mockups used for sprint reviews
 │   └── user-stories/                 Sprint scope documents (S1, S2, S3)
 ├── docker-compose.yml                Two services + healthchecks + bridge network
+├── sonar-project.properties          SonarCloud project configuration
 ├── Jenkinsfile                       Declarative pipeline, seven stages
 └── README.md                         This file
 ```
@@ -347,49 +349,78 @@ The `:latest` tag is what the Deploy stage uses, so the Build stage is the only 
 
 ### Stage 2: Test
 
-Runs the backend Jest suite **inside a clean `node:20-alpine` container** with the source mounted, so the Jenkins host doesn't need Node installed:
+Builds a short-lived **test image** from [`backend/Dockerfile.test`](./backend/Dockerfile.test), which installs the full dependency tree (including `devDependencies` such as Jest and Supertest) and runs `npm test` as its default command:
 
 ```bash
-docker run --rm \
-  -v "$PWD/backend:/app" \
-  -w /app \
-  node:20-alpine \
-  sh -c "npm install && npm test"
+docker build -f backend/Dockerfile.test -t tours-booking-backend-test:$BUILD_NUMBER ./backend
+docker run --rm tours-booking-backend-test:$BUILD_NUMBER
 ```
 
-The stage publishes JUnit results from `backend/reports/junit.xml` when available. **A red test fails the entire pipeline**: no downstream stage runs.
+The dedicated test Dockerfile keeps the Jenkins host completely free of Node tooling and produces a reproducible environment that matches what runs in CI. Test output is printed to the Jenkins console; a red test fails the entire pipeline so no downstream stage runs. If you want a clickable test report inside Jenkins, switch the container's `CMD` to `npm run test:ci` and add a `junit` publisher in `post.always`.
 
-### Stage 3: Code Quality (SonarCloud, placeholder)
+### Stage 3: Code Quality (SonarCloud)
 
-Wrapped in a `try / catch` around a `sonar-token` Jenkins credential. If the token exists, runs the `sonarsource/sonar-scanner-cli` container against `backend/src`, `frontend/src` and `backend/__tests__`, feeding the LCOV coverage produced in Stage 2 so SonarCloud can compute test coverage too. If the token is missing, the stage logs a clear *PLACEHOLDER: SonarCloud not configured* line and continues.
+Uses the **SonarScanner Jenkins tool** (configured under *Manage Jenkins → Tools*) together with the `SONAR_TOKEN` Jenkins credential. The scan reads its project configuration from [`sonar-project.properties`](./sonar-project.properties) at the repo root, so the Jenkinsfile only needs to pass the token:
+
+```bash
+${scannerHome}/bin/sonar-scanner -Dsonar.token=$SONAR_TOKEN
+```
+
+The properties file declares:
+
+- `sonar.projectKey=JeanPiere91_tours-booking-platform`
+- `sonar.organization=jeanpiere91`
+- `sonar.host.url=https://sonarcloud.io`
+- `sonar.sources=backend/src,frontend/src`
+- `sonar.tests=backend/__tests__`
+
+Results appear on the SonarCloud dashboard with code smells, duplication, complexity, and security hotspots broken down per file.
 
 ### Stage 4: Security (Trivy)
 
-Pulls `aquasec/trivy:latest` and scans both freshly built images for **HIGH** and **CRITICAL** CVEs. The findings are printed in the log; `--exit-code 0` keeps the build informational for the assessment (flip to `--exit-code 1` to block deploys on unresolved high-severity findings). If Trivy can't be pulled (offline runner), the stage degrades gracefully with a placeholder line.
+Runs the official `aquasec/trivy` image against the backend and frontend images produced in Stage 1, filtering for **HIGH** and **CRITICAL** severities only:
+
+```bash
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+  aquasec/trivy image --severity HIGH,CRITICAL --no-progress \
+  tours-booking-backend:latest || true
+```
+
+The trailing `|| true` keeps the build informational for the assessment: findings are visible in the Jenkins log but they do not fail the pipeline. To convert this stage into a true policy gate, drop the `|| true` and add `--exit-code 1` so any HIGH/CRITICAL match aborts the build before Deploy.
 
 ### Stage 5: Deploy
 
 ```bash
-docker compose down --remove-orphans
-docker compose up -d
+docker-compose down || true
+docker-compose build --no-cache
+docker-compose up -d
+docker-compose ps
 ```
 
-`withCredentials` binds `resend-api-key`, `resend-from-email` and `resend-agency-email` so the secrets reach the backend container via the env passthrough in [`docker-compose.yml`](./docker-compose.yml). If the credentials are absent, deploy still proceeds with email delivery disabled.
+Docker Compose tears down the previous deployment, rebuilds both images from scratch (`--no-cache` guarantees that every release picks up the exact code from the new commit, even if Docker's layer cache would have re-used a stale layer), and brings the services back up in detached mode. The Resend secrets are read from `backend/.env` on the host machine (the env-var passthrough in [`docker-compose.yml`](./docker-compose.yml) forwards `RESEND_API_KEY`, `FROM_EMAIL`, and `AGENCY_EMAIL` into the container).
 
 ### Stage 6: Release
 
-Tags the just-deployed images with a stable `release-<BUILD_NUMBER>` label:
+Marks the successful build with a clean log line that captures the version identifier (`BUILD_NUMBER`) and the image tags that were just deployed:
 
 ```bash
-docker tag tours-booking-backend:$BUILD_NUMBER  tours-booking-backend:release-$BUILD_NUMBER
-docker tag tours-booking-frontend:$BUILD_NUMBER tours-booking-frontend:release-$BUILD_NUMBER
+echo "Release completed for build #$BUILD_NUMBER"
+echo "Backend image:  $BACKEND_IMAGE:$BUILD_NUMBER"
+echo "Frontend image: $FRONTEND_IMAGE:$BUILD_NUMBER"
 ```
 
-In a more complete setup, this is where a `docker push` to a registry (Docker Hub, GHCR, Artifact Registry) and a `git tag v0.3.$BUILD_NUMBER` would happen. The placeholder is intentional and clearly logged.
+In a production workflow, this is where a `docker push` to a registry (Docker Hub, GHCR, Artifact Registry) and a `git tag v0.3.$BUILD_NUMBER` would happen. For the assessment, the visible release identifier in the Jenkins log satisfies the *"successful builds identified as stable versions"* acceptance criterion.
 
 ### Stage 7: Monitoring
 
-Polls `GET /health` against the deployed backend, retrying every 5 seconds up to 12 times (60-second window). On success it prints the JSON payload (`status`, `service`, `uptime`, `timestamp`); on failure it dumps `docker compose ps` and the last 50 lines of backend logs, then fails the build. A non-fatal secondary probe also pings the frontend on `:5173`.
+Verifies that the deployed backend is actually answering on its health endpoint by running `wget` **from inside the running container**:
+
+```bash
+sleep 10
+docker exec tours-backend sh -c "wget -qO - http://localhost:5000/health"
+```
+
+Executing the probe inside the container avoids any host-networking confusion and confirms both that the process is alive and that the loopback interface inside the container is serving traffic. If the endpoint does not answer (container crashed, port not bound, dependency missing), `wget` exits non-zero and the pipeline fails with the health-check error captured in the Jenkins log.
 
 ---
 
@@ -451,7 +482,7 @@ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
     tours-booking-backend:<BUILD_NUMBER>
 ```
 
-The current configuration **reports** findings without blocking. To convert it into a true policy gate, change `--exit-code 0` to `--exit-code 1` in the Jenkinsfile. Trivy will then return a non-zero exit on any HIGH/CRITICAL match and Jenkins will fail the build, stopping the deployment.
+The current configuration **reports** findings without blocking: the actual Jenkinsfile appends `|| true` to each scan so that Trivy's exit code can never fail the pipeline. To convert this into a real policy gate, drop `|| true` and add `--exit-code 1`. Trivy will then return a non-zero exit on any HIGH/CRITICAL match and Jenkins will stop the build before Deploy.
 
 ### Why this matters
 
@@ -469,19 +500,20 @@ In a DevSecOps workflow, the cheapest place to catch a vulnerable transitive dep
                                                           │
                                                           ▼
                                                 ┌──────────────────────┐
-                                                │ docker compose down  │
-                                                │ docker compose up -d │
+                                                │ docker-compose down  │
+                                                │ build --no-cache     │
+                                                │ docker-compose up -d │
                                                 └──────────┬───────────┘
                                                           │
                                                           ▼
                                                 ┌──────────────────────┐
-                                                │ curl /health (×12)   │
-                                                │ verify (healthy)     │
+                                                │ docker exec wget     │
+                                                │ /health (sleep 10)   │
                                                 └──────────┬───────────┘
                                                           │
                                                           ▼
                                                 ┌──────────────────────┐
-                                                │ Tag release images   │
+                                                │ Release logged       │
                                                 │ Containers serving   │
                                                 │ live traffic on VM   │
                                                 └──────────────────────┘
@@ -492,10 +524,10 @@ In a DevSecOps workflow, the cheapest place to catch a vulnerable transitive dep
 1. **Developer commits and pushes.** Standard Git workflow against the `main` branch.
 2. **GitHub fires a `push` webhook** to the Jenkins controller. The payload includes the branch, commit SHA, and author.
 3. **Jenkins schedules a build** on the agent, clones the repository at the new SHA, and evaluates the declarative `Jenkinsfile`.
-4. **Stages 1-4 prepare and verify the artefact**: images are built, tests run, code quality and security are inspected. Any failure here halts the pipeline before any production-affecting change occurs.
-5. **Stage 5 redeploys the containers** in place. `docker compose down --remove-orphans` cleans the previous state; `docker compose up -d` recreates the services from the `:latest` images produced in Stage 1. Because the images already exist on the host, the redeploy is fast (sub-15 second on a small VM).
-6. **Stage 6 tags the release** so the exact images can be rolled back to later via `docker tag … release-<n>`.
-7. **Stage 7 verifies health.** The pipeline does not declare success until `GET /health` answers `200 OK` *after* the Deploy step. If the new container fails to come up, Jenkins captures the logs and fails the build. The previous containers are already gone, so a follow-up commit (or a manual rebuild from the last green tag) is required to recover. A future iteration could improve this with a blue/green redeploy.
+4. **Stages 1-4 prepare and verify the artefact**: production and test images are built, the Jest suite runs inside the test image, SonarCloud analyses the source, and Trivy scans the production images. A red test fails the pipeline immediately; Sonar and Trivy findings are logged but informational.
+5. **Stage 5 redeploys the containers** in place. `docker-compose down` tears the previous deployment down, `docker-compose build --no-cache` rebuilds both images from the new commit (forcing a fresh layer so any code change is guaranteed to ship), and `docker-compose up -d` brings the services back up in detached mode.
+6. **Stage 6 logs the release identifier**, recording the build number and the image tags that were just deployed. This satisfies the *"successful builds identified as stable versions"* criterion without coupling the assessment to a registry push.
+7. **Stage 7 verifies health.** After a short `sleep`, the pipeline runs `docker exec tours-backend wget http://localhost:5000/health`. If the endpoint answers, the JSON payload (`status`, `service`, `uptime`, `timestamp`) is printed and the build is marked green; if it doesn't, the `wget` exit code fails the build and the surrounding Jenkins logs make the cause obvious.
 
 ### Healthy container monitoring
 
@@ -585,7 +617,7 @@ curl -X POST http://<vm-host>:5000/api/bookings \
 - **Blue/green or rolling deploys**: eliminate the brief downtime introduced by `docker compose down` before `up`.
 - **Docker image registry**: push `release-<n>` tags to GHCR or Artifact Registry to enable multi-host rollouts and historical rollbacks.
 - **Frontend tests**: extend Jest with React Testing Library or add Playwright end-to-end tests to the pipeline.
-- **Real SonarCloud project**: wire the placeholder stage to a live SonarCloud organisation and surface the Quality Gate result in Jenkins.
+- **SonarCloud Quality Gate gating**: the scan already runs on every build; the next step is to add a `waitForQualityGate()` block so a failing Quality Gate also fails the Jenkins build, preventing low-quality merges from reaching Deploy.
 - **Promote Trivy from advisory to gating**: flip `--exit-code 0` to `--exit-code 1` once base-image hygiene is under control.
 - **Observability**: ship container logs to Cloud Logging and add a Prometheus scrape endpoint exposing booking counters.
 - **Kubernetes**: repackage the Compose topology as a Helm chart for a multi-node deployment target.
