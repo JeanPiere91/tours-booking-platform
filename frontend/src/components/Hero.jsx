@@ -12,7 +12,7 @@ export default function Hero({ onSearch }) {
         </h1>
         <p className="hero__lede">
           Over 1,000 happy travelers. Local guides, small groups, and personalized care before,
-          during, and after your trip SIT753.
+          during, and after your trip SIT753 7.3HD.
         </p>
         <SearchBox onSearch={onSearch} />
       </div>
