@@ -1,27 +1,47 @@
+name: tours-booking-platform
+
 services:
   backend:
     build:
       context: ./backend
+    image: tours-booking-backend:sprint1
     container_name: tours-backend
     environment:
       NODE_ENV: production
-      PORT: 4000
+      PORT: 5000
       CORS_ORIGIN: "*"
     ports:
-      - "4000:4000"
+      - "5000:5000"
+    networks:
+      - tours-net
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:4000/health || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:5000/health > /dev/null || exit 1"]
       interval: 30s
       timeout: 5s
+      start_period: 10s
       retries: 3
     restart: unless-stopped
 
   frontend:
     build:
       context: ./frontend
+    image: tours-booking-frontend:sprint1
     container_name: tours-frontend
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     ports:
       - "5173:80"
+    networks:
+      - tours-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/ > /dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 5s
+      retries: 3
     restart: unless-stopped
+
+networks:
+  tours-net:
+    driver: bridge

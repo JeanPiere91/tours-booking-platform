@@ -93,7 +93,7 @@ export default function ToursListPage() {
               title="We couldn't load the tours"
               description={
                 error?.message
-                  ? `${error.message}. Make sure the backend API is running on port 4000.`
+                  ? `${error.message}. Make sure the backend API is running on port 5000.`
                   : 'Please try again in a moment.'
               }
             />
