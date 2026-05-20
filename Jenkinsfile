@@ -84,7 +84,7 @@ pipeline {
                 sh '''
                     echo "Checking backend health endpoint..."
                     sleep 10
-                    docker exec tours-backend wget -qO
+                    docker exec tours-backend sh -c "wget -qO - http://localhost:5000/health"
                 '''
             }
         }
